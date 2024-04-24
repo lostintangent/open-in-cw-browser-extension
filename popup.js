@@ -3,9 +3,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const repositoryNameInput = document.getElementById('repositoryName');
     const selectedTextInput = document.getElementById('selectedText');
 
+    // Initially disable the text area while loading the selected text
+    selectedTextInput.disabled = true;
+
+    // Attempt to read the selected text from storage
     chrome.storage.local.get(['selectedText'], (result) => {
-        const selectedText = result.selectedText;
-        selectedTextInput.value = selectedText; // Insert the selected text into the new textarea element
+        let selectedText = result.selectedText;
+        if (selectedText) {
+            selectedTextInput.value = selectedText; // Insert the selected text into the textarea element
+            selectedTextInput.disabled = false; // Enable the text area after loading the text
+        } else {
+            // If no selected text was found in storage, attempt to read it from the current tab
+            // Updated to use chrome.scripting API for manifest v3 support
+            chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+                chrome.scripting.executeScript({
+                    func: () => window.getSelection().toString(),
+                }, (results) => {
+                    selectedText = results[0].result;
+                    selectedTextInput.value = selectedText || ''; // Insert the selected text into the textarea element
+                    selectedTextInput.disabled = false; // Enable the text area after loading the text
+                });
+            });
+        }
 
         saveButton.addEventListener('click', () => {
             const repositoryName = repositoryNameInput.value;

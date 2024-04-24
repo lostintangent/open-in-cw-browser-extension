@@ -5,9 +5,13 @@
   "description": "Select text on a webpage and open it in a GitHub workspace.",
   "permissions": [
     "contextMenus",
-    "tabs"
+    "tabs",
+    "activeTab"
   ],
   "background": {
     "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
   }
 }
