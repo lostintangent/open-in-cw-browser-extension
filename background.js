@@ -10,6 +10,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "openInWorkspace") {
     const selectedText = info.selectionText;
     await chrome.storage.local.set({ selectedText });
-    chrome.action.openPopup();
+    chrome.windows.create({url: "popup.html", type: "popup", width: 400, height: 350 });
   }
 });
