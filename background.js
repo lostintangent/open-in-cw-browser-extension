@@ -6,16 +6,10 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "openInWorkspace") {
     const selectedText = info.selectionText;
-    chrome.storage.local.set({ selectedText }, () => {
-      chrome.windows.create({
-        url: "popup.html",
-        type: "popup",
-        width: 400,
-        height: 200
-      });
-    });
+    await chrome.storage.local.set({ selectedText });
+    chrome.action.openPopup();
   }
 });
