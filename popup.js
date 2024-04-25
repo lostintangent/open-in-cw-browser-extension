@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (repositoryName && selectedText) {
             const url = `https://copilot-workspace.githubnext.com/${repositoryName}?task=${encodeURIComponent(selectedText)}`;
             chrome.tabs.create({ url });
+            // Send a message to the background script to close the window
+            chrome.runtime.sendMessage({ type: "closeWindow" });
         }
     });
 });

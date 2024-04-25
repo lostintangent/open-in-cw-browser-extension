@@ -53,5 +53,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       }
     });
     return true;
+  } else if (message.type === "closeWindow") {
+    if (visibleWindowId !== null) {
+      chrome.windows.remove(visibleWindowId);
+    }
   }
 });
