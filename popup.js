@@ -9,15 +9,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     saveButton.addEventListener("click", () => {
-        const repositoryName = repositoryNameInput.value;
+        const repositoryName = repositoryNameInput.value.trim();
         const selectedText = selectedTextInput.value;
 
-        chrome.runtime.sendMessage({ type: "saveRepositoryName", repositoryName: repositoryName });
-
-        if (repositoryName && selectedText) {
-            const url = `https://copilot-workspace.githubnext.com/${repositoryName}?task=${encodeURIComponent(selectedText)}`;
+        const effectiveRepositoryName = repositoryName === "" ? "githubnext/blank" : repositoryName;
+        if (selectedText) {
+            const url = `https://copilot-workspace.githubnext.com/${effectiveRepositoryName}?task=${encodeURIComponent(selectedText)}`;
             chrome.tabs.create({ url });
-            // Send a message to the background script to close the window
+
+            chrome.runtime.sendMessage({ type: "saveRepositoryName", repositoryName });
             chrome.runtime.sendMessage({ type: "closeWindow" });
         }
     });
