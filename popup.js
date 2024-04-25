@@ -3,14 +3,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const repositoryNameInput = document.getElementById("repositoryName");
     const selectedTextInput = document.getElementById("selectedText");
 
-    chrome.runtime.sendMessage({ type: "getSelectedText" }, (selectedText) => {
-        selectedTextInput.value = selectedText || "";
-        selectedTextInput.disabled = false;
+    chrome.runtime.sendMessage({ type: "getStartupData" }, (response) => {
+        selectedTextInput.value = response.selectedText || "";
+        repositoryNameInput.value = response.repositoryName || "";
     });
 
     saveButton.addEventListener("click", () => {
         const repositoryName = repositoryNameInput.value;
         const selectedText = selectedTextInput.value;
+
+        chrome.runtime.sendMessage({ type: "saveRepositoryName", repositoryName: repositoryName });
 
         if (repositoryName && selectedText) {
             const url = `https://copilot-workspace.githubnext.com/${repositoryName}?task=${encodeURIComponent(selectedText)}`;
