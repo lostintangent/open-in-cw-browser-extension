@@ -24,7 +24,7 @@ To use the extension through the context menu:
 To use the extension through the browser action button:
 1. Select text on any webpage.
 2. Click on the extension's icon in the browser toolbar.
-3. The popup will appear with the selected text already filled in. Enter the GitHub repository name in the text box provided.
+3. The popup will now request the latest selected text directly from the background script, ensuring you always have the most current selection. Enter the GitHub repository name in the text box provided.
 4. Click the save button. This will open a new tab to `https://copilot-workspspace.githubnext.com/<repository>?task=<selectedText>`, where `<repository>` is the GitHub repository name you entered, and `<selectedText>` is the text you had selected.
 
 Enjoy the seamless integration of your browsing and Copilot Workspace!
